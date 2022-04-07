@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+int main() {
+    srand(time(NULL));// aby seed rand() byl generowany z czasem
+    int tab[9][9];//tablica 9x9
+    int z;
+    printf("---------------");
+    for(int i=0; i<9; i++){//wiersze
+        printf("\n");
+        printf("| ");
+        for(int j=0; j<9; j++){//kolumny
+            int max=9, min=1;       // aby ustawic generowane liczby na <1,9>
+            z=rand()%max + min;// z bedzie losowa liczby <1,9>
+            tab[i][j]=z;//podstawia pod dany obszar tablicy losowa liczbe
+            printf(" %d  ", tab[i][j]);
+        }
+        printf("|");
+    }
+    printf("\n---------------");
+
+
+
+    return 0;
+}
