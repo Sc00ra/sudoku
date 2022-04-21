@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-int main() {
+
+int robacz(){
     srand(time(NULL));// aby seed rand() byl generowany z czasem
     int tab[9][9];//tablica 9x9
     int z;
-    printf("---------------");
+    printf("-----------------------");
     for(int i=0; i<9; i++){//wiersze
         printf("\n");
         printf("| ");
@@ -17,8 +18,80 @@ int main() {
         }
         printf("|");
     }
-    printf("\n---------------");
+    printf("\n--------------------------");
+}
+int sprawdzaczwierszy(int tab[9][9]){
+    int tabw[10]={0,0,0,0,0,0,0,0,0,0};    //pomocna tablica aby sprawdzic razy kazda liczba wystepuje w wierszu
+    for(int i=0;i<9;i++){
+        for(int j=0;i<9;i++){
+           tabw[tab[i][j]]++;
+       }
+        for(int z=1;z<=9;z++)
+            if(tabw[z]!=1){
+                printf("the value %d came %d times in %d row\n",z,tabw[z],i+1);
+                return 1;
+        }
+        for(int z=1;z<=9;z++)
+            tabw[z]=0;
+    }
+return 0;
+}
+int sprawdzaczkolumn(int tab[9][9]){
+    int tabk[10]={0};    //pomocna tablica aby sprawdzic razy kazda liczba wystepuje w wierszu
+    for(int i=0;i<9;i++){
+        for(int j=0;i<9;i++){
+            tabk[tab[j][i]]++;
+        }
+        for(int z=1;z<=9;z++)
+            if(tabk[z]!=1){
+                printf("the value %d came %d times in %d column\n",z,tabk[z],i+1);
+                return 1;
+            }
+        for (int z = 1; z <= 9; z++) {
+            tabk[z] = 0;
+        }
+    }
+    return 0;
+}
+int sprawdzacz3x3(int tab[9][9]){
+    int tabx[10]={0},licznik=0;
+    for(int a=0;a<9;a+=3){
+        for(int b=0;b<9;b+=3){
+            for(int i=a;i<a+3;i++){
+                for(int j=b;j<b+3;j++){
+                    tabx[tab[i][j]]++;
+                }
+            }
+            licznik++;
+            for(int k=1;k<=9;k++)
+            if(tab[k]!=1){
+                printf("the value %d came %d times in %d box\n",k,tabx[k],licznik);
+                return 1;
+            }
+            for (int k = 1; k <= 9; k++) {
+                tabx[k] = 0;
+            }
+        }
+    }
+    return 0;
+}
 
+
+int main() {
+    int tab[9][9]={1,2,3,4,5,6,7,8,9,
+                   4,5,6,7,8,9,1,2,3,
+                   7,6,9,1,2,3,4,5,6,
+                   2,3,4,5,6,7,8,9,1,
+                   5,6,7,8,9,1,2,3,4,
+                   8,9,1,2,3,4,5,6,7,
+                   3,4,5,6,7,8,9,1,2,
+                   6,7,8,9,1,2,3,4,5,
+                   9,1,2,3,4,5,6,7,8};
+    if(sprawdzacz3x3(tab)!=0 & sprawdzaczkolumn(tab)!=0 & sprawdzaczwierszy(tab)!=0) {
+        printf("chujoza");
+    }else {
+        printf("sukces");
+    }
 
 
     return 0;
