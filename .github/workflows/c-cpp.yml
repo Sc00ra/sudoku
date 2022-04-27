@@ -2,9 +2,36 @@
 #include <stdlib.h>
 #include <time.h>
 
-int robacz(){
+int sudoku[9][9];
+
+
+
+int wczytaj(char *plik){
+    FILE * fp=fopen(plik, "r");
+    if(fp == NULL){
+        printf("plik nie istnieje badz jest pusty");
+        return 1;
+    }
+        for(int i = 0; i<9;i++){
+            for(int j = 0; j<9; j++){
+            char k;
+                if(k=='\n' || k == '\r'){
+                    j--;
+                    continue;
+                }
+            sudoku[i][j] = (int)(k);
+        }
+    }
+
+    fclose(fp);
+    return 0;
+}
+int ramka(){
+
+}
+
+int generuj(){
     srand(time(NULL));// aby seed rand() byl generowany z czasem
-    int tab[9][9];//tablica 9x9
     int z;
     printf("-----------------------");
     for(int i=0; i<9; i++){//wiersze
@@ -13,18 +40,18 @@ int robacz(){
         for(int j=0; j<9; j++){//kolumny
             int max=9, min=1;       // aby ustawic generowane liczby na <1,9>
             z=rand()%max + min;// z bedzie losowa liczby <1,9>
-            tab[i][j]=z;//podstawia pod dany obszar tablicy losowa liczbe
-            printf(" %d  ", tab[i][j]);
+            sudoku[i][j]=z;//podstawia pod dany obszar tablicy losowa liczbe
+            printf(" %d  ", sudoku[i][j]);
         }
         printf("|");
     }
     printf("\n--------------------------");
 }
-int sprawdzaczwierszy(int tab[9][9]){
+int sprawdzaczwierszy(){
     int tabw[10]={0,0,0,0,0,0,0,0,0,0};    //to samo co w kolumnie
     for(int i=0;i<9;i++){
         for(int j=0;i<9;i++){
-           tabw[tab[i][j]]++;
+           tabw[sudoku[i][j]]++;
        }
         for(int z=1;z<=9;z++)
             if(tabw[z]!=1){
@@ -36,11 +63,11 @@ int sprawdzaczwierszy(int tab[9][9]){
     }
 return 0;
 }
-int sprawdzaczkolumn(int tab[9][9]){
-    int tabk[10]={0};    //pomocna tablica aby sprawdzic razy kazda liczba wystepuje w wierszu
+int sprawdzaczkolumn(){
+    int tabk[10]={0,0,0,0,0,0,0,0,0,0};    //pomocna tablica aby sprawdzic razy kazda liczba wystepuje w wierszu
     for(int i=0;i<9;i++){//wybiera wiersze
         for(int j=0;i<9;i++){//wybiera kolumny
-            tabk[tab[j][i]]++;//zwieksza o 1 dana liczbe ktora jest w danym wierszu
+            tabk[sudoku[j][i]]++;//zwieksza o 1 dana liczbe ktora jest w danym wierszu
         }
         for(int z=1;z<=9;z++)
             if(tabk[z]!=1){//sprawdza czy kazda liczba wystapila raz
@@ -53,24 +80,24 @@ int sprawdzaczkolumn(int tab[9][9]){
     }
     return 0;
 }
-int sprawdzacz3x3(int tab[9][9]){
+int sprawdzacz3x3(){
     int tabx[10]={0};
     int komorka=0;//pomocna tablica + licznik
     for(int a=0;a<9;a+=3){
         for(int b=0;b<9;b+=3){
             for(int i=a;i<a+3;i++){
                 for(int j=b;j<b+3;j++){
-                    tabx[tab[i][j]]++;
+                    tabx[sudoku[i][j]]++;
                 }
             }
             komorka++;
             for(int k=1;k<=9;k++) {
-                if (tab[k] != 1) {
+                if (sudoku[k] != 1) {
                     printf("liczba %d pojawila sie %d razy w  %d 3x3\n", k, tabx[k], komorka);
                     return 1;
                 }
             }
-            for (int z = 1; z <= 9; z++) {
+            for(int z = 1; z <= 9; z++) {
                 tabx[z] = 0;
             }
         }
@@ -79,22 +106,22 @@ int sprawdzacz3x3(int tab[9][9]){
 }
 
 
-int main() {
-    int tab[9][9]={1,2,3,4,5,6,7,8,9,
-                   4,5,6,7,8,9,1,2,3,
-                   7,8,9,1,2,3,4,5,6,
-                   2,3,4,5,6,7,8,9,1,
-                   5,6,7,8,9,1,2,3,4,
-                   8,9,1,2,3,4,5,6,7,
-                   3,4,5,6,7,8,9,1,2,
-                   6,7,8,9,1,2,3,4,5,
-                   9,1,2,3,4,5,6,7,8};
-    if(sprawdzacz3x3(tab)!=0 | sprawdzaczkolumn(tab)!=0 | sprawdzaczwierszy(tab)!=0) {
-        printf("error");
-    }else {
-        printf("sukces");
-    }
+int main(int argc, char **argv) {
 
+    //if(sprawdzacz3x3(sudoku)!=0 || sprawdzaczkolumn(sudoku)!=0 || sprawdzaczwierszy(sudoku)!=0) {
+
+
+        //printf("error");
+        //return 1;
+   // }else {
+     //   printf("sukces");
+   // }
+   wczytaj(argv[1]);
+    for(int i = 0;i<9;i++){
+        for(int j = 0;j<9;j++){
+            printf("%d  ", sudoku[i][j]);
+    }
+}
 
     return 0;
 }
